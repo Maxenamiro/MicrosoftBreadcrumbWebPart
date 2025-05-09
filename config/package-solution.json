@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "BreadcrumbWeb",
+    "id": "52dfe632-d408-490c-a79c-f1e91f5f815f",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.21.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "Web part breadcrumb"
+      },
+      "longDescription": {
+        "default": "breadcrumb solution"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "Breadcrumbproj Feature",
+        "description": "The feature that activates elements of the Breadcrumbproj solution.",
+        "id": "7ca04b78-e477-4ac3-b6ce-8944bfa9e149",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/BreadcrumbWeb.sppkg"
+  }
+}

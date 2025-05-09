@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "breadcrumb-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/breadcrumbWeb/BreadcrumbWebPart.js",
+          "manifest": "./src/webparts/breadcrumbWeb/BreadcrumbWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "BreadcrumbWebPartStrings": "lib/webparts/BreadcrumbWeb/loc/{locale}.js"
+  }
+}
