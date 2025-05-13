@@ -6,58 +6,79 @@ export default class Breadcrumb extends React.Component<IBreadcrumbProps> {
 	private observer: MutationObserver | null = null
 	private sectionRef = React.createRef<HTMLElement>()
 
+	private capitalizeFirstLetter(text: string): string {
+		if (!text) return ''
+		return text.charAt(0).toUpperCase() + text.slice(1)
+	}
+
 	private renderBreadcrumbs(): JSX.Element {
-		const origin = window.location.origin
-		const path = window.location.pathname
-
-		const breadcrumbs = path
+		// const origin = window.location.origin
+		const pathParts = window.location.pathname
 			.split('/')
-			.filter(Boolean)
-			.filter((part) => part !== '_layouts' && part !== '15')
-			.reduce<{ name: string; url: string }[]>(
-				(acc, part, index, array) => {
-					const name = decodeURIComponent(part)
-
-					if (name === 'sites') return acc
-
-					if (name === 'SitePages' && index + 1 < array.length) {
-						const pageName = array[index + 1].replace('.aspx', '')
-						acc.push({
-							name: decodeURIComponent(pageName),
-							url: origin + '/' + array.slice(0, index + 2).join('/'),
-						})
-						return acc
-					}
-
-					if (name === 'SitePages' || name.endsWith('.aspx')) return acc
-
-					const url = origin + '/' + array.slice(0, index + 1).join('/')
-					if (part !== 'SitePages') {
-						acc.push({ name, url })
-					}
-
-					return acc
-				},
-				[{ name: 'Home', url: origin }]
+			.filter(
+				(part) =>
+					part &&
+					part.toLowerCase() !== 'sites' &&
+					part.toLowerCase() !== 'sitepages' &&
+					part.toLowerCase() !== '_layouts' &&
+					part !== '15'
 			)
 
+		let breadcrumbs: { name: string; url: string }[] = []
+
+		let currentPath = '/'
+
+		pathParts.forEach((part, index) => {
+			const cleanPart = part.replace('.aspx', '')
+			const isSiteName = index === 0
+
+			if (isSiteName) {
+				currentPath += `sites/${cleanPart}`
+			} else {
+				currentPath += `/SitePages/${cleanPart}`
+			}
+
+			const decodedName = decodeURIComponent(cleanPart)
+			breadcrumbs.push({
+				name: this.capitalizeFirstLetter(decodedName),
+				url: currentPath,
+			})
+		})
+
+		const lastIndex = breadcrumbs.length - 1
+
 		return (
-			<nav aria-label='breadcrumb' className={styles.breadcrumb}>
-				<ul style={{ listStyle: 'none', padding: 0, display: 'flex' }}>
+			<nav aria-label='breadcrumb'>
+				<ol
+					style={{
+						margin: 0,
+						padding: 0,
+						listStyle: 'none',
+						display: 'flex',
+						flexWrap: 'wrap',
+						alignItems: 'center',
+						fontSize: '14px',
+						paddingLeft: '10px',
+					}}
+				>
 					{breadcrumbs.map((crumb, idx) => (
-						<li key={idx}>
-							<a
-								href={crumb.url}
-								style={{ textDecoration: 'none', color: 'black' }}
-							>
-								{crumb.name}
-							</a>
-							{idx < breadcrumbs.length - 1 && (
-								<span style={{ margin: '0 4px' }}>&gt;</span>
-							)}
-						</li>
+						<React.Fragment key={idx}>
+							{idx > 0 && <li style={{ margin: '0 5px' }}>&gt;</li>}
+							<li>
+								{idx === lastIndex ? (
+									<span style={{ fontWeight: 'bold' }}>{crumb.name}</span>
+								) : (
+									<a
+										href={crumb.url}
+										style={{ textDecoration: 'none', color: 'blue' }}
+									>
+										{crumb.name}
+									</a>
+								)}
+							</li>
+						</React.Fragment>
 					))}
-				</ul>
+				</ol>
 			</nav>
 		)
 	}
@@ -67,17 +88,8 @@ export default class Breadcrumb extends React.Component<IBreadcrumbProps> {
 		const wrapper = section?.parentElement as HTMLElement
 		if (!wrapper) return
 
-		const applyStyles = () => {
-			// wrapper.style.display = 'flex'
-			// wrapper.style.justifyContent = 'center'
-			// wrapper.style.textAlign = 'center'
-			wrapper.style.color = 'black'
-		}
-
-		applyStyles()
-
 		this.observer = new MutationObserver(() => {
-			applyStyles()
+			wrapper.style.color = 'inherit'
 		})
 
 		this.observer.observe(wrapper, {
@@ -99,7 +111,9 @@ export default class Breadcrumb extends React.Component<IBreadcrumbProps> {
 		return (
 			<section
 				ref={this.sectionRef}
-				className={`${styles.breadcrumb} ${hasTeamsContext ? styles.teams : ''}`}
+				className={`${styles.breadcrumb} ${
+					hasTeamsContext ? styles.teams : ''
+				}`}
 			>
 				{this.renderBreadcrumbs()}
 			</section>
