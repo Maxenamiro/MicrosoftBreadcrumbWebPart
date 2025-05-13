@@ -1,61 +1,40 @@
-@import '~@fluentui/react/dist/sass/References.scss';
-.breadcrumbLink {
-	text-decoration: 'none';
-	color: inherit;
-}
-ul {
-	list-style: 'none';
-	padding: 0;
-	display: 'flex';
-}
 .breadcrumb {
 	font-size: 14px;
 	margin-bottom: 1em;
+	color: inherit;
+}
 
-	a {
-		text-decoration: none;
-		color: var(--link);
+.breadcrumbList {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 5px;
+	padding-left: 10px;
+	margin: 0;
+	list-style: none;
+}
 
-		&:hover {
-			text-decoration: underline;
-			color: var(--linkHovered);
-		}
+.breadcrumbItem {
+	display: flex;
+	align-items: center;
+}
+
+.breadcrumbSeparator {
+	margin: 0 5px;
+	color: inherit;
+}
+
+.breadcrumbLink {
+	color: inherit;
+	text-decoration: none;
+	cursor: pointer;
+
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 }
 
-.breadcrumb {
-	overflow: hidden;
-	padding: 1em;
-	color: '[theme:bodyText, default: #323130]';
-	color: var(--bodyText);
-	&.teams {
-		font-family: $ms-font-family-fallbacks;
-	}
-}
-
-.welcome {
-	text-align: center;
-}
-
-.welcomeImage {
-	width: 100%;
-	max-width: 420px;
-}
-
-.links {
-	a {
-		text-decoration: none;
-		color: '[theme:link, default:#03787c]';
-		color: var(
-			--link
-		); // note: CSS Custom Properties support is limited to modern browsers only
-
-		&:hover {
-			text-decoration: underline;
-			color: '[theme:linkHovered, default: #014446]';
-			color: var(
-				--linkHovered
-			); // note: CSS Custom Properties support is limited to modern browsers only
-		}
-	}
+.breadcrumbText {
+	font-weight: bold;
+	color: inherit;
 }

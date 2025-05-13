@@ -1,5 +1,4 @@
 import * as React from 'react'
-import styles from './Breadcrumb.module.scss'
 import type { IBreadcrumbProps } from './IBreadcrumbProps'
 
 export default class Breadcrumb extends React.Component<IBreadcrumbProps> {
@@ -12,7 +11,6 @@ export default class Breadcrumb extends React.Component<IBreadcrumbProps> {
 	}
 
 	private renderBreadcrumbs(): JSX.Element {
-		// const origin = window.location.origin
 		const pathParts = window.location.pathname
 			.split('/')
 			.filter(
@@ -25,7 +23,6 @@ export default class Breadcrumb extends React.Component<IBreadcrumbProps> {
 			)
 
 		let breadcrumbs: { name: string; url: string }[] = []
-
 		let currentPath = '/'
 
 		pathParts.forEach((part, index) => {
@@ -49,36 +46,33 @@ export default class Breadcrumb extends React.Component<IBreadcrumbProps> {
 
 		return (
 			<nav aria-label='breadcrumb'>
-				<ol
+				<div
 					style={{
-						margin: 0,
-						padding: 0,
-						listStyle: 'none',
 						display: 'flex',
 						flexWrap: 'wrap',
 						alignItems: 'center',
 						fontSize: '14px',
+						gap: '5px',
 						paddingLeft: '10px',
+						color: 'inherit',
 					}}
 				>
 					{breadcrumbs.map((crumb, idx) => (
-						<React.Fragment key={idx}>
-							{idx > 0 && <li style={{ margin: '0 5px' }}>&gt;</li>}
-							<li>
-								{idx === lastIndex ? (
-									<span style={{ fontWeight: 'bold' }}>{crumb.name}</span>
-								) : (
-									<a
-										href={crumb.url}
-										style={{ textDecoration: 'none', color: 'blue' }}
-									>
-										{crumb.name}
-									</a>
-								)}
-							</li>
-						</React.Fragment>
+						<span key={idx}>
+							{idx > 0 && <span> &gt; </span>}
+							{idx === lastIndex ? (
+								<strong>{crumb.name}</strong>
+							) : (
+								<a
+									href={crumb.url}
+									style={{ color: 'inherit', textDecoration: 'none' }}
+								>
+									{crumb.name}
+								</a>
+							)}
+						</span>
 					))}
-				</ol>
+				</div>
 			</nav>
 		)
 	}
@@ -100,21 +94,12 @@ export default class Breadcrumb extends React.Component<IBreadcrumbProps> {
 	}
 
 	componentWillUnmount() {
-		if (this.observer) {
-			this.observer.disconnect()
-		}
+		this.observer?.disconnect()
 	}
 
 	public render(): React.ReactElement<IBreadcrumbProps> {
-		const { hasTeamsContext } = this.props
-
 		return (
-			<section
-				ref={this.sectionRef}
-				className={`${styles.breadcrumb} ${
-					hasTeamsContext ? styles.teams : ''
-				}`}
-			>
+			<section ref={this.sectionRef} style={{ marginBottom: '1em' }}>
 				{this.renderBreadcrumbs()}
 			</section>
 		)
